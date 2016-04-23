@@ -5,12 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <TextView
+        android:id="@+id/tv_lastsynced"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textStyle="italic"
+        android:gravity="center_vertical|right"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"
+        android:clickable="true"
+        android:background="?selectableItemBackground"
+        android:text=""/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/row_locationstate"/>
-
-
+        tools:listitem="@layout/row_locationstate"
+        android:layout_above="@id/tv_lastsynced"/>
 
 </RelativeLayout>

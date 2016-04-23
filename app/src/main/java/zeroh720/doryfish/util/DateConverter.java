@@ -1,15 +1,25 @@
 package zeroh720.doryfish.util;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.Date;
 
 public class DateConverter {
-    public static String getDate(String datetime){
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
-//        TemporalAccessor accessor = timeFormatter.parse("2015-10-27T16:22:27.605-07:00");
-//
-//        Date date = Date.from(Instant.from(accessor));
-//        System.out.println(date);
+    public static String getFormattedDate(String datetime){
+        DateTime dateTime = new DateTime(datetime);
 
-        return "";
+        DateTimeFormatter uiDateFormat = DateTimeFormat.forPattern("MMMM dd,yyyy");
+
+        return uiDateFormat.print(dateTime);
+    }
+
+    public static String getFormattedTime(String datetime){
+        DateTime dateTime = new DateTime(datetime);
+
+        DateTimeFormatter uiDateFormat = DateTimeFormat.forPattern("HH:mm a");
+
+        return uiDateFormat.print(dateTime);
     }
 }

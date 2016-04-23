@@ -31,7 +31,7 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         if(savedInstanceState != null){
             locations = savedInstanceState.<Location>getParcelableArrayList(Constants.EXTRA_LOCATION);

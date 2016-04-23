@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,11 +25,13 @@ import zeroh720.doryfish.model.Prediction;
 import zeroh720.doryfish.service.ApiManager;
 import zeroh720.doryfish.service.GeofenceService;
 import zeroh720.doryfish.task.GetLocationTask;
+import zeroh720.doryfish.util.DateConverter;
 import zeroh720.doryfish.values.Constants;
 
 public class MainActivity extends BaseActivity {
     private ValidationDialogFragment validationPopup;
     private RecyclerView recyclerView;
+    private TextView tv_lastsynced;
     private PredictionRecyclerViewAdapter adapter;
     private ArrayList<Prediction> predictionList;
     private ArrayList<Location> locations;
@@ -38,6 +41,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        tv_lastsynced = (TextView)findViewById(R.id.tv_lastsynced);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -52,6 +56,12 @@ public class MainActivity extends BaseActivity {
         adapter = new PredictionRecyclerViewAdapter(this, predictionList);
         adapter.setClickListener(locationClickListener);
         recyclerView.setAdapter(adapter);
+        tv_lastsynced.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiManager.getInstance().refreshPredictionList();
+            }
+        });
 
         registerReceiver(mainReciever, new IntentFilter(Constants.APP_INTENT));
         ApiManager.getInstance().refreshPredictionList();
@@ -81,6 +91,7 @@ public class MainActivity extends BaseActivity {
                         GetLocationTask getLocationTask = new GetLocationTask(MainActivity.this, prediction.getLocationId());
                         getLocationTask.execute();
                     }
+                    tv_lastsynced.setText("Last Synced: " + DateConverter.getFormattedTime(predictionList.get(0).getTime()));
                     break;
                 case Constants.ACTION_FETCH_LOCATION_SUCCESS:
                     Location location = intent.getParcelableExtra(Constants.EXTRA_LOCATION);

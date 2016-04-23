@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import zeroh720.doryfish.R;
 import zeroh720.doryfish.model.Prediction;
@@ -35,10 +33,9 @@ public class PredictionHistoryRecyclerViewAdapter extends RecyclerView.Adapter<P
 
     @Override
     public void onBindViewHolder(PredictionHistoryRecyclerViewAdapter.PredictionHistoryViewHolder holder, int position) {
-//        holder.tv_date.setText(data.get(position).getTime());
-
-        holder.tv_date.setText(DateConverter.getDate(data.get(position).getTime()).toString());
         holder.tv_state.setText(data.get(position).getStatus());
+        holder.tv_time.setText(DateConverter.getFormattedTime(data.get(position).getTime()));
+        holder.tv_date.setText(DateConverter.getFormattedDate(data.get(position).getTime()));
     }
 
     @Override
@@ -49,11 +46,13 @@ public class PredictionHistoryRecyclerViewAdapter extends RecyclerView.Adapter<P
     public class PredictionHistoryViewHolder extends RecyclerView.ViewHolder{
         public TextView tv_state;
         public TextView tv_date;
+        public TextView tv_time;
 
         public PredictionHistoryViewHolder(View itemView) {
             super(itemView);
             tv_state = (TextView)itemView.findViewById(R.id.tv_stateName);
             tv_date = (TextView)itemView.findViewById(R.id.tv_date);
+            tv_time = (TextView)itemView.findViewById(R.id.tv_time);
         }
     }
 }
