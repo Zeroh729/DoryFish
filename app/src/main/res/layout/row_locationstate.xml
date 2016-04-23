@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/iv_stateIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginRight="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_locationName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_stateIcon"
+            android:textSize="22sp"
+            android:text="Bulive"/>
+        <TextView
+            android:id="@+id/tv_stateName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_stateIcon"
+            android:layout_below="@id/tv_locationName"
+            android:textSize="22sp"
+            android:text="Probably"/>
+
+        <TextView
+            android:id="@+id/tv_verfiedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_stateIcon"
+            android:layout_below="@id/tv_stateName"
+            android:layout_marginTop="-4dp"
+            android:text=""/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
