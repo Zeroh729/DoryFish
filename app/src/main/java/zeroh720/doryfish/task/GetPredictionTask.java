@@ -18,10 +18,16 @@ import zeroh720.doryfish.values.Constants;
 
 public class GetPredictionTask extends AsyncTask<String, Void, String> {
     private Context context;
+    private String locationId = "";
     private String error = "";
 
     public GetPredictionTask(Context context) {
         this.context = context;
+    }
+
+    public GetPredictionTask(Context context, String locationId) {
+        this.context = context;
+        locationId = "s/" + locationId;
     }
 
     @Override
@@ -30,7 +36,7 @@ public class GetPredictionTask extends AsyncTask<String, Void, String> {
         String reply = null;
         error = "";
           if( !isCancelled() ) {
-            reply = serverUtilities.getRequest(Constants.API_URL + "/fish/prediction", new HashMap(), false);
+            reply = serverUtilities.getRequest(Constants.API_URL + "/fish/prediction" + locationId, new HashMap(), false);
         }
 
         return reply;
@@ -46,12 +52,10 @@ public class GetPredictionTask extends AsyncTask<String, Void, String> {
                 JSONArray json = new JSONArray(data);
 
                 for(int i = 0; i < json.length(); i++) {
-                    String locationName = (String) ((JSONObject) json.get(i)).get("Location");
+                    String locationName = (String) ((JSONObject) json.get(i)).get("LocationName");
                     String locationId = ((JSONObject) json.get(i)).get("LocationId") + "";
                     String predictedDate = (String) ((JSONObject) json.get(i)).get("PredictedDate");
                     String state = (String) ((JSONObject) json.get(i)).get("Prediction");
-
-                    Log.d("TEST", "key: " + locationName);
 
                     Prediction pred = new Prediction("", state, predictedDate, locationId, locationName);
                     predictions.add(pred);

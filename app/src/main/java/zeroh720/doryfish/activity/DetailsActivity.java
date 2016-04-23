@@ -17,9 +17,10 @@ import zeroh720.doryfish.adapter.PredictionHistoryRecyclerViewAdapter;
 import zeroh720.doryfish.model.Location;
 import zeroh720.doryfish.model.Prediction;
 import zeroh720.doryfish.service.ApiManager;
+import zeroh720.doryfish.ui.SimpleDividerItemDecoration;
 import zeroh720.doryfish.values.Constants;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends BaseActivity {
     private PredictionHistoryRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
     private TextView tv_name;
@@ -40,12 +41,13 @@ public class DetailsActivity extends AppCompatActivity {
         }else{
             String locationId = getIntent().getStringExtra(Constants.EXTRA_LOCATION);
             ApiManager.getInstance().refreshLocation(locationId);
-//            ApiManager.getInstance().refreshPredictionList(locationId);
+            ApiManager.getInstance().refreshPredictionList(locationId);
             predictions = new ArrayList<>();
         }
 
         adapter = new PredictionHistoryRecyclerViewAdapter(this, predictions);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         registerReceiver(detailsReceiver, new IntentFilter(Constants.APP_INTENT));
     }

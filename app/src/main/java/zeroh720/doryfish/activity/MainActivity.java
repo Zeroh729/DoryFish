@@ -1,28 +1,33 @@
 package zeroh720.doryfish.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import zeroh720.doryfish.R;
 import zeroh720.doryfish.adapter.PredictionRecyclerViewAdapter;
+import zeroh720.doryfish.fragment.ValidationDialogFragment;
 import zeroh720.doryfish.model.Location;
 import zeroh720.doryfish.model.Prediction;
 import zeroh720.doryfish.service.ApiManager;
-import zeroh720.doryfish.task.GetPredictionTask;
+import zeroh720.doryfish.service.GeofenceService;
+import zeroh720.doryfish.task.GetLocationTask;
 import zeroh720.doryfish.values.Constants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
+    private ValidationDialogFragment validationPopup;
     private RecyclerView recyclerView;
     private PredictionRecyclerViewAdapter adapter;
     private ArrayList<Prediction> predictionList;
@@ -50,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(mainReciever, new IntentFilter(Constants.APP_INTENT));
         ApiManager.getInstance().refreshPredictionList();
+
+        showValidationPopup();
     }
 
     PredictionRecyclerViewAdapter.PredictionViewHolder.ClickListener locationClickListener = new PredictionRecyclerViewAdapter.PredictionViewHolder.ClickListener() {
@@ -69,12 +76,93 @@ public class MainActivity extends AppCompatActivity {
                 case Constants.ACTION_FETCH_PREDLIST_SUCCESS:
                     predictionList.clear();
                     predictionList.addAll(intent.<Prediction>getParcelableArrayListExtra(Constants.EXTRA_PREDICTION));
+                    for(Prediction prediction : predictionList){
+                        GetLocationTask getLocationTask = new GetLocationTask(MainActivity.this, prediction.getLocationId());
+                        getLocationTask.execute();
+                    }
                     break;
                 case Constants.ACTION_FETCH_LOCATION_SUCCESS:
-                    locations = intent.getParcelableArrayListExtra(Constants.EXTRA_LOCATION);
+                    Location location = intent.getParcelableExtra(Constants.EXTRA_LOCATION);
+                    locations.add(location);
+                    GeofenceService.getInstance().addGeofence(location.getId(), location.getLatitude(), location.getLongitude());
+                    break;
+                case Constants.ACTIONTYPE_GEOFENCE_ENTER:
+                    String id = intent.getStringExtra(Constants.EXTRA_LOCATION_ID);
+                    Location location1 = getLocationFromId(id);
+                    if(location1 != null){
+                        showNotification(MainActivity.this, location1.getName(), 0, getIntent());
+                    }
+                    break;
+                case Constants.ACTION_POST_VALIDATION_SUCCESS:
+                    dismissValidationPopup();
                     break;
             }
             adapter.notifyDataSetChanged();
+        }
+    };
+
+    private Location getLocationFromId(String id){
+        for(Location location : locations){
+          if(location.getId().equals(id)){
+              return location;
+          }
+        }
+        return null;
+    }
+
+    private void showNotification(Context context, String content, int id, Intent intent) {
+        PendingIntent pi = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.BigTextStyle bigTextStyle = new Notification.BigTextStyle();
+        bigTextStyle.bigText(content)
+                .setBigContentTitle("You've entered " + content + "!");
+
+        Notification.Builder mBuilder = new Notification.Builder(context)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setStyle(bigTextStyle)
+                .setContentText(content)
+                .setContentTitle(context.getResources().getString(R.string.app_name));
+        mBuilder.setContentIntent(pi);
+        mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        mBuilder.setAutoCancel(true);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(id, mBuilder.build());
+    }
+
+    private void showValidationPopup(){
+        validationPopup = new ValidationDialogFragment();
+        validationPopup.show(getSupportFragmentManager(), "");
+        validationPopup.onCreateViewListener = new ValidationDialogFragment.OnCreateViewListener() {
+            @Override
+            public void doneLoading() {
+                validationPopup.tv_popupContent.setText("You are in Creek #2 with state: HEALTHY");
+                validationPopup.btn_approve.setOnClickListener(approveListener);
+                validationPopup.btn_disapprove.setOnClickListener(disapproveListener);
+                validationPopup.btn_notnow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismissValidationPopup();
+                    }
+                });
+            }
+        };
+    }
+
+    private void dismissValidationPopup(){
+        if(validationPopup!=null)
+            validationPopup.dismiss();
+    }
+
+    private View.OnClickListener disapproveListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //TODO: PostValidationTask
+        }
+    };
+
+    private View.OnClickListener approveListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //TODO: PostValidationTask
         }
     };
 
@@ -85,17 +173,12 @@ public class MainActivity extends AppCompatActivity {
         outState.putParcelableArrayList(Constants.EXTRA_LOCATION, locations);
     }
 
+
     @Override
-    protected void onPause() {
+    protected void onDestroy() {
         unregisterReceiver(mainReciever);
-        super.onPause();
+        super.onDestroy();
     }
-//
-//    @Override
-//    protected void onDestroy() {
-//        unregisterReceiver(mainReciever);
-//        super.onDestroy();
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

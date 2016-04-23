@@ -42,19 +42,19 @@ public class PredictionRecyclerViewAdapter extends RecyclerView.Adapter<Predicti
         String locationId = predictions.get(position).getLocationId();
         switch(predictions.get(position).getStatus()){
             case SpawnStates.NOT_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_green);
+                holder.iv_state.setImageResource(R.drawable.ic_fish_green_trans);
                 break;
             case SpawnStates.MIN_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_yellow);
+                holder.iv_state.setImageResource(R.drawable.ic_fish_yellow_trans);
                 break;
             case SpawnStates.SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_orange);
+                holder.iv_state.setImageResource(R.drawable.ic_fish_orange_trans);
                 break;
             case SpawnStates.VERY_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_red);
+                holder.iv_state.setImageResource(R.drawable.ic_fish_red_trans);
                 break;
             case SpawnStates.HIGHLY_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_black);
+                holder.iv_state.setImageResource(R.drawable.ic_fish_black_trans);
                 break;
         }
 

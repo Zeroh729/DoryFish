@@ -14,12 +14,16 @@
         android:layout_marginTop="100dp"
         android:textSize="22sp"
         android:text="Location Name"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
+        android:background="#bebebe"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="8dp"
         android:text="Past Predictions"/>
 
 
@@ -27,6 +31,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="8dp"
         tools:listitem="@layout/row_predictionhistory"/>
 
 </LinearLayout>
