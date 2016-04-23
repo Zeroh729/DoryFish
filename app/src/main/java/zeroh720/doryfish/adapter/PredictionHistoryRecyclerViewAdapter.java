@@ -13,6 +13,7 @@ import java.util.List;
 
 import zeroh720.doryfish.R;
 import zeroh720.doryfish.model.Prediction;
+import zeroh720.doryfish.util.DateConverter;
 
 public class PredictionHistoryRecyclerViewAdapter extends RecyclerView.Adapter<PredictionHistoryRecyclerViewAdapter.PredictionHistoryViewHolder>{
     private Context context;
@@ -34,7 +35,9 @@ public class PredictionHistoryRecyclerViewAdapter extends RecyclerView.Adapter<P
 
     @Override
     public void onBindViewHolder(PredictionHistoryRecyclerViewAdapter.PredictionHistoryViewHolder holder, int position) {
-        holder.tv_date.setText(data.get(position).getTime());
+//        holder.tv_date.setText(data.get(position).getTime());
+
+        holder.tv_date.setText(DateConverter.getDate(data.get(position).getTime()).toString());
         holder.tv_state.setText(data.get(position).getStatus());
     }
 

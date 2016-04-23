@@ -1,12 +1,15 @@
 package zeroh720.doryfish.fragment;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -46,4 +49,11 @@ public class ValidationDialogFragment extends DialogFragment {
         void doneLoading();
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog d = super.onCreateDialog(savedInstanceState);
+        d.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return d;
+    }
 }

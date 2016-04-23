@@ -18,6 +18,7 @@ public class Constants {
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_LOCATION_ID = "locationId";
     public final static String EXTRA_PREDICTION = "prediction";
+    public final static String EXTRA_PREDICTION_ID = "prediction";
     public final static String ACTIONTYPE_GEOFENCE_ENTER = "geofenceEnter";
     public final static String EXTRA_CURR_LOCATION = "currentLocation";
 }

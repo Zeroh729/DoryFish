@@ -64,6 +64,7 @@ public class MainActivity extends BaseActivity {
         public void onClick(String locationId) {
             Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
             intent.putExtra(Constants.EXTRA_LOCATION, locationId);
+            intent.putExtra(Constants.EXTRA_PREDICTION, getPredictionFromLocationId(locationId));
             startActivity(intent);
         }
     };
@@ -100,6 +101,15 @@ public class MainActivity extends BaseActivity {
             adapter.notifyDataSetChanged();
         }
     };
+
+    private Prediction getPredictionFromLocationId(String locationId){
+        for(Prediction prediction : predictionList){
+            if(prediction.getLocationId().equals(locationId)){
+                return prediction;
+            }
+        }
+        return null;
+    }
 
     private Location getLocationFromId(String id){
         for(Location location : locations){
