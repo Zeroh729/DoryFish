@@ -202,6 +202,12 @@ public class MainActivity extends BaseActivity {
             case R.id.item_refresh:
                 ApiManager.getInstance().refreshPredictionList();
                 break;
+            case R.id.item_mapView:
+                Intent intent = new Intent(this, MapActivity.class);
+                intent.putParcelableArrayListExtra(Constants.EXTRA_PREDICTION, predictionList);
+                intent.putParcelableArrayListExtra(Constants.EXTRA_LOCATION, locations);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

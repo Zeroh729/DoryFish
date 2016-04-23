@@ -119,7 +119,7 @@ public class DetailsActivity extends BaseActivity {
         }
         mMap.addMarker(marker);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(creek));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(13));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
     }
 
     private int getPinResId(){

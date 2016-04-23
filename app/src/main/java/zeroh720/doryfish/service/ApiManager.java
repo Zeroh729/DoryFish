@@ -26,7 +26,7 @@ public class ApiManager {
     }
 
     public void refreshPredictionList(String locationId){
-        GetPredictionTask predictionTask = new GetPredictionTask(context);
+        GetPredictionTask predictionTask = new GetPredictionTask(context, locationId);
         predictionTask.execute();
     }
 
