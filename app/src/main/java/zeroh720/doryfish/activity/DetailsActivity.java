@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +39,7 @@ public class DetailsActivity extends BaseActivity {
     private TextView tv_name;
     private Location location;
     private ArrayList<Prediction> predictions;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class DetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_details);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         tv_name = (TextView)findViewById(R.id.tv_locationName);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -96,6 +100,7 @@ public class DetailsActivity extends BaseActivity {
                 case Constants.ACTION_FETCH_PREDLIST_SUCCESS:
                     predictions.clear();
                     predictions.addAll(intent.<Prediction>getParcelableArrayListExtra(Constants.EXTRA_PREDICTION));
+                    progressBar.setVisibility(View.GONE);
                     break;
                 case Constants.ACTION_FETCH_LOCATION_SUCCESS:
                     if(location == null) {

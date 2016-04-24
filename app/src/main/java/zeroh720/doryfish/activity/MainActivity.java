@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity {
     private ValidationDialogFragment validationPopup;
     private RecyclerView recyclerView;
     private TextView tv_lastsynced;
+    private ProgressBar progressBar;
     private PredictionRecyclerViewAdapter adapter;
     private ArrayList<Prediction> predictionList;
     private ArrayList<Location> locations;
@@ -42,6 +44,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         tv_lastsynced = (TextView)findViewById(R.id.tv_lastsynced);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -59,7 +62,7 @@ public class MainActivity extends BaseActivity {
         tv_lastsynced.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiManager.getInstance().refreshPredictionList();
+                refreshHomeContent();
             }
         });
 
@@ -67,6 +70,11 @@ public class MainActivity extends BaseActivity {
         ApiManager.getInstance().refreshPredictionList();
 
         showValidationPopup();
+    }
+
+    private void refreshHomeContent(){
+        ApiManager.getInstance().refreshPredictionList();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     PredictionRecyclerViewAdapter.PredictionViewHolder.ClickListener locationClickListener = new PredictionRecyclerViewAdapter.PredictionViewHolder.ClickListener() {
@@ -109,6 +117,7 @@ public class MainActivity extends BaseActivity {
                     dismissValidationPopup();
                     break;
             }
+            progressBar.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
         }
     };
@@ -211,7 +220,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.item_refresh:
-                ApiManager.getInstance().refreshPredictionList();
+                refreshHomeContent();
                 break;
             case R.id.item_mapView:
                 Intent intent = new Intent(this, MapActivity.class);

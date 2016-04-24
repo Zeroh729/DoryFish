@@ -24,4 +24,11 @@
         tools:listitem="@layout/row_locationstate"
         android:layout_above="@id/tv_lastsynced"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progressRingSize"
+        android:layout_height="@dimen/progressRingSize"
+        android:layout_centerHorizontal="true"
+        />
+
 </RelativeLayout>
