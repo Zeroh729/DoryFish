@@ -40,27 +40,43 @@ public class PredictionRecyclerViewAdapter extends RecyclerView.Adapter<Predicti
     @Override
     public void onBindViewHolder(PredictionViewHolder holder, int position) {
         String locationId = predictions.get(position).getLocationId();
+        int imageRes = 0;
+        int colorRes = 0;
+        String probability = "";
+
         switch(predictions.get(position).getStatus()){
             case SpawnStates.NOT_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_green_trans);
+                imageRes = R.drawable.ic_fish_green_trans;
+                colorRes = R.color.colorState1;
+                probability = "Carp Free";
                 break;
             case SpawnStates.MIN_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_yellow_trans);
+                imageRes = R.drawable.ic_fish_yellow_trans;
+                colorRes = R.color.colorState2;
+                probability = "Low Probability";
                 break;
             case SpawnStates.SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_orange_trans);
+                imageRes = R.drawable.ic_fish_orange_trans;
+                colorRes = R.color.colorState3;
+                probability = "Moderate Probability";
                 break;
             case SpawnStates.VERY_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_red_trans);
+                imageRes = R.drawable.ic_fish_red_trans;
+                colorRes = R.color.colorState4;
+                probability = "High Probability";
                 break;
             case SpawnStates.HIGHLY_SUITABLE:
-                holder.iv_state.setImageResource(R.drawable.ic_fish_black_trans);
+                imageRes = R.drawable.ic_fish_black_trans;
+                colorRes = R.color.colorState5;
+                probability = "Extreme Probability";
                 break;
         }
+        holder.iv_state.setImageResource(imageRes);
+        holder.tv_state.setTextColor(context.getResources().getColor(colorRes));
 
         holder.locationId = locationId;
         holder.tv_location.setText(predictions.get(position).getLocationName());
-        holder.tv_state.setText(predictions.get(position).getStatus());
+        holder.tv_state.setText(probability);
         holder.tv_verified.setText("");
     }
 

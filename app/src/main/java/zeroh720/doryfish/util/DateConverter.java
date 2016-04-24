@@ -10,7 +10,7 @@ public class DateConverter {
     public static String getFormattedDate(String datetime){
         DateTime dateTime = new DateTime(datetime);
 
-        DateTimeFormatter uiDateFormat = DateTimeFormat.forPattern("MMMM dd,yyyy");
+        DateTimeFormatter uiDateFormat = DateTimeFormat.forPattern("MMMM dd, yyyy");
 
         return uiDateFormat.print(dateTime);
     }

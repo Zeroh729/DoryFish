@@ -2,7 +2,9 @@ package zeroh720.doryfish.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +24,7 @@ import zeroh720.doryfish.values.Constants;
 import zeroh720.doryfish.values.SpawnStates;
 
 public class MapActivity extends AppCompatActivity {
+    private Toolbar toolbar;
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private ArrayList<Location> locations;
@@ -31,7 +34,10 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbar = (Toolbar)findViewById(R.id.appbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Carp Tracking Map");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(savedInstanceState != null){
             locations = savedInstanceState.<Location>getParcelableArrayList(Constants.EXTRA_LOCATION);
@@ -99,5 +105,12 @@ public class MapActivity extends AppCompatActivity {
                 return R.drawable.ic_fish_black_pin;
         }
         return -1;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home)
+            finish();
+        return false;
     }
 }

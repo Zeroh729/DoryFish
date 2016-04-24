@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,8 +33,9 @@ import zeroh720.doryfish.ui.SimpleDividerItemDecoration;
 import zeroh720.doryfish.values.Constants;
 import zeroh720.doryfish.values.SpawnStates;
 
-public class DetailsActivity extends BaseActivity {
+public class DetailsActivity extends AppCompatActivity {
     private GoogleMap mMap;
+    private Toolbar toolbar;
     private Prediction prediction;
     private SupportMapFragment mapFragment;
     private PredictionHistoryRecyclerViewAdapter adapter;
@@ -49,6 +53,10 @@ public class DetailsActivity extends BaseActivity {
         tv_name = (TextView)findViewById(R.id.tv_locationName);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        toolbar = (Toolbar)findViewById(R.id.appbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(onMapReadyCallback);
@@ -141,5 +149,11 @@ public class DetailsActivity extends BaseActivity {
                 return R.drawable.ic_fish_black_pin;
         }
         return -1;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home)
+            finish();
+        return false;
     }
 }

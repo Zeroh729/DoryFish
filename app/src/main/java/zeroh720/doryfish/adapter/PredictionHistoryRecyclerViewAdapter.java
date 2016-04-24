@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import zeroh720.doryfish.R;
 import zeroh720.doryfish.model.Prediction;
 import zeroh720.doryfish.util.DateConverter;
+import zeroh720.doryfish.values.SpawnStates;
 
 public class PredictionHistoryRecyclerViewAdapter extends RecyclerView.Adapter<PredictionHistoryRecyclerViewAdapter.PredictionHistoryViewHolder>{
     private Context context;
@@ -33,9 +34,35 @@ public class PredictionHistoryRecyclerViewAdapter extends RecyclerView.Adapter<P
 
     @Override
     public void onBindViewHolder(PredictionHistoryRecyclerViewAdapter.PredictionHistoryViewHolder holder, int position) {
-        holder.tv_state.setText(data.get(position).getStatus());
+        int colorRes = 0;
+        String probability = "";
+
         holder.tv_time.setText(DateConverter.getFormattedTime(data.get(position).getTime()));
         holder.tv_date.setText(DateConverter.getFormattedDate(data.get(position).getTime()));
+        switch(data.get(position).getStatus()){
+            case SpawnStates.NOT_SUITABLE:
+                colorRes = R.color.colorState1;
+                probability = "Carp Free";
+                break;
+            case SpawnStates.MIN_SUITABLE:
+                colorRes = R.color.colorState2;
+                probability = "Low Probability";
+                break;
+            case SpawnStates.SUITABLE:
+                colorRes = R.color.colorState3;
+                probability = "Moderate Probability";
+                break;
+            case SpawnStates.VERY_SUITABLE:
+                colorRes = R.color.colorState4;
+                probability = "High Probability";
+                break;
+            case SpawnStates.HIGHLY_SUITABLE:
+                colorRes = R.color.colorState5;
+                probability = "Extreme Probability";
+                break;
+        }
+        holder.tv_state.setTextColor(context.getResources().getColor(colorRes));
+        holder.tv_state.setText(probability);
     }
 
     @Override

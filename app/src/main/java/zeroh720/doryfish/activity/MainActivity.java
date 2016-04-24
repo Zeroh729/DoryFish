@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import zeroh720.doryfish.R;
 import zeroh720.doryfish.adapter.PredictionRecyclerViewAdapter;
@@ -28,8 +32,10 @@ import zeroh720.doryfish.service.GeofenceService;
 import zeroh720.doryfish.task.GetLocationTask;
 import zeroh720.doryfish.util.DateConverter;
 import zeroh720.doryfish.values.Constants;
+import zeroh720.doryfish.values.SpawnStates;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
     private ValidationDialogFragment validationPopup;
     private RecyclerView recyclerView;
     private TextView tv_lastsynced;
@@ -46,7 +52,9 @@ public class MainActivity extends BaseActivity {
         tv_lastsynced = (TextView)findViewById(R.id.tv_lastsynced);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        toolbar = (Toolbar)findViewById(R.id.appbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Where are the Carps?");
 
         if(savedInstanceState != null){
             predictionList = savedInstanceState.getParcelableArrayList(Constants.EXTRA_PREDICTION);
@@ -69,7 +77,7 @@ public class MainActivity extends BaseActivity {
         registerReceiver(mainReciever, new IntentFilter(Constants.APP_INTENT));
         ApiManager.getInstance().refreshPredictionList();
 
-        showValidationPopup();
+//        showValidationPopup();
     }
 
     private void refreshHomeContent(){
@@ -99,6 +107,7 @@ public class MainActivity extends BaseActivity {
                         GetLocationTask getLocationTask = new GetLocationTask(MainActivity.this, prediction.getLocationId());
                         getLocationTask.execute();
                     }
+                    sortData();
                     tv_lastsynced.setText("Last Synced: " + DateConverter.getFormattedTime(predictionList.get(0).getTime()));
                     break;
                 case Constants.ACTION_FETCH_LOCATION_SUCCESS:
@@ -203,6 +212,40 @@ public class MainActivity extends BaseActivity {
         outState.putParcelableArrayList(Constants.EXTRA_LOCATION, locations);
     }
 
+    private void sortData(){
+        Collections.sort(predictionList, predictionComparator);
+        adapter.notifyDataSetChanged();
+    }
+
+    private Comparator<Prediction> predictionComparator = new Comparator<Prediction>() {
+        @Override
+        public int compare(Prediction lhs, Prediction rhs) {
+            int lhsP = getPriority(lhs);
+            int rhsP = getPriority(rhs);
+
+            if(lhsP < rhsP)
+                return 1;
+            if(lhsP == rhsP)
+                return 0;
+            return -1;
+        }
+    };
+
+    private int getPriority(Prediction prediction){
+        switch(prediction.getStatus()){
+            case SpawnStates.NOT_SUITABLE:
+                return 0;
+            case SpawnStates.MIN_SUITABLE:
+                return 1;
+            case SpawnStates.SUITABLE:
+                return 2;
+            case SpawnStates.VERY_SUITABLE:
+                return 3;
+            case SpawnStates.HIGHLY_SUITABLE:
+                return 4;
+        }
+        return 0;
+    }
 
     @Override
     protected void onDestroy() {

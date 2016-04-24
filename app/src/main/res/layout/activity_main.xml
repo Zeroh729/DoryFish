@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/toolbar"/>
+
     <TextView
         android:id="@+id/tv_lastsynced"
         android:layout_width="match_parent"
@@ -21,14 +25,17 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/appbar"
         tools:listitem="@layout/row_locationstate"
         android:layout_above="@id/tv_lastsynced"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
+        android:layout_marginTop="8dp"
         android:layout_width="@dimen/progressRingSize"
         android:layout_height="@dimen/progressRingSize"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/appbar"
         />
 
 </RelativeLayout>

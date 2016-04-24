@@ -9,6 +9,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,6 +33,7 @@ import zeroh720.doryfish.values.Constants;
 
 public class BaseActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private GoogleApiClient mGoogleApiClient;
+    protected Toolbar toolbar;
 //    private Location mLastLocation;
     LocationRequest locationRequest;
 
