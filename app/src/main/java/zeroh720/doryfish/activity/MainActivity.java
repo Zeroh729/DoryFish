@@ -17,10 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import zeroh720.doryfish.R;
 import zeroh720.doryfish.adapter.PredictionRecyclerViewAdapter;
@@ -76,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(mainReciever, new IntentFilter(Constants.APP_INTENT));
         ApiManager.getInstance().refreshPredictionList();
-
-//        showValidationPopup();
     }
 
     private void refreshHomeContent(){
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         validationPopup.onCreateViewListener = new ValidationDialogFragment.OnCreateViewListener() {
             @Override
             public void doneLoading() {
-                validationPopup.tv_popupContent.setText("You are in Creek #2 with state: HEALTHY");
+                validationPopup.tv_popupContent.setText("You are in Krosno Creeks\nAre there carps there?");
                 validationPopup.btn_approve.setOnClickListener(approveListener);
                 validationPopup.btn_disapprove.setOnClickListener(disapproveListener);
                 validationPopup.btn_notnow.setOnClickListener(new View.OnClickListener() {
@@ -194,14 +196,16 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener disapproveListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //TODO: PostValidationTask
+            Toast.makeText(MainActivity.this, "Feedback sent!", Toast.LENGTH_SHORT).show();
+            dismissValidationPopup();
         }
     };
 
     private View.OnClickListener approveListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //TODO: PostValidationTask
+            Toast.makeText(MainActivity.this, "Feedback sent!", Toast.LENGTH_SHORT).show();
+            dismissValidationPopup();
         }
     };
 
@@ -274,4 +278,17 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setValidationSchedule(){
+        Date date =  new Date();
+        date.setTime(new Date().getTime() + (1000 * 35));
+        new Timer().schedule(task,date);
+    }
+
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            showValidationPopup();
+        }
+    };
 }

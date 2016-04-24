@@ -22,23 +22,23 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btn_dislike"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Disapprove"/>
-            <Button
-                android:id="@+id/btn_like"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Approve"/>
-            <Button
                 android:id="@+id/btn_ntnow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Not Now"/>
+            <Button
+                android:id="@+id/btn_dislike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="No"/>
+            <Button
+                android:id="@+id/btn_like"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Yes"/>
         </LinearLayout>
     </LinearLayout>
 

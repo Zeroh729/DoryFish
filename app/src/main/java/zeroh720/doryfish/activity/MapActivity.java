@@ -1,5 +1,6 @@
 package zeroh720.doryfish.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 import zeroh720.doryfish.R;
+import zeroh720.doryfish.application.DoryFish;
 import zeroh720.doryfish.model.Location;
 import zeroh720.doryfish.model.Prediction;
 import zeroh720.doryfish.values.Constants;
@@ -109,8 +111,12 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home)
+        if(item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(Constants.APP_INTENT);
+            intent.putExtra(Constants.EXTRA_ACTIONTYPE, Constants.ACTION_SHOWPOPUP);
+            DoryFish.getContext().sendBroadcast(intent);
             finish();
+        }
         return false;
     }
 }

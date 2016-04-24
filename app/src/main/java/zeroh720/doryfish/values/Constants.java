@@ -14,6 +14,8 @@ public class Constants {
     public final static String ACTION_POST_VALIDATION_SUCCESS = "postValidationSuccess";
     public final static String ACTION_POST_VALIDATION_FAILURE = "postValidationFailure";
 
+    public final static String ACTION_SHOWPOPUP = "showPopup";
+
     public final static String EXTRA_ACTIONTYPE = "actionType";
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_LOCATION_ID = "locationId";
